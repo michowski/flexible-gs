@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Flexible grid system</title>
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet" type="text/css">
+	<link href="test.css" type="text/css" rel="stylesheet" />
+</head>
+<body>
+	<main role="main" class="wrap">
+		<div class="row">
+			<div class="col">
+				<h1>Flexible grid system by Michowski</h1>
+				<h2>Default usage: responsive columns.</h2>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12 m-col-3">
+				<div class="box">
+					.col-12 .m-col-3
+				</div>
+			</div>
+			<div class="col-12 m-col-4">
+				<div class="box">
+					.col-12 .m-col-4
+				</div>
+			</div>
+			<div class="col-12 m-col-5">
+				<div class="box">
+					.col-12 .m-col-5
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<h2>Reversed row (same HTML as above, but row with .row_reversed).</h2>
+			</div>
+		</div>
+		<div class="row row_reverse">
+			<div class="col-12 m-col-3">
+				<div class="box">
+					.col-12 .m-col-3
+				</div>
+			</div>
+			<div class="col-12 m-col-4">
+				<div class="box">
+					.col-12 .m-col-4
+				</div>
+			</div>
+			<div class="col-12 m-col-5">
+				<div class="box">
+					.col-12 .m-col-5
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<h2>Nested columns.</h2>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12 m-col-8">
+				<div class="row box">
+					<div class="col-3"><div class="box"></div></div>
+					<div class="col-4"><div class="box"></div></div>
+					<div class="col-5"><div class="box"></div></div>
+				</div>
+			</div>
+			<div class="col-12 m-col-4">
+				<div class="row box">
+					<div class="col-6"><div class="box"></div></div>
+					<div class="col-6"><div class="box"></div></div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<h2>Columns with offset.</h2>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12 m-col-3">
+				<div class="box">
+					.m-col-3
+				</div>
+			</div>
+			<div class="col-12 m-col-5 m-offset-4">
+				<div class="box">
+					.m-col-5 .m-offset-4
+ 				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<h2>Auto width columns.</h2>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-auto">
+				<div class="box">.col-auto</div>
+			</div>
+			<div class="col-auto">
+				<div class="box">.col-auto</div>
+			</div>
+			<div class="col-auto">
+				<div class="box">.col-auto</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12 m-col-auto">
+				<div class="box">.m-col-auto</div>
+			</div>
+			<div class="col-12 m-col-auto">
+				<div class="box">.m-col-auto</div>
+			</div>
+			<div class="col-12 m-col-auto">
+				<div class="box">.m-col-auto</div>
+			</div>
+			<div class="col-12 m-col-auto">
+				<div class="box">.m-col-auto</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12 m-col-3">
+				<div class="box">.m-col-3</div>
+			</div>
+			<div class="col-12 m-col-auto">
+				<div class="box">.m-col-auto</div>
+			</div>
+			<div class="col-12 m-col-auto">
+				<div class="box">.m-col-auto</div>
+			</div>
+			<div class="col-12 m-col-5">
+				<div class="box">.m-col-5</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<h2>Custom column width (grid independent).</h2>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col col_40">
+				<div class="box">width: 40%</div>
+			</div>
+			<div class="col col_60">
+				<div class="box">width: 60%</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col col_200px">
+				<div class="box">width: 200px</div>
+			</div>
+			<div class="col-auto">
+				<div class="box">.col-auto</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<h2>Responsive features.</h2>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12">
+				<div class="box">
+					<div class="l-big-text">This font is big on large devices.</div>
+					This is a message for everyone.
+					<b class="dsp-none m-dsp-block">However, this bold message is displayed only on big screens.</b>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12 align-center m-col-6 m-align-left">
+				<div class="box">
+					This is some fancy footer.
+				</div>
+			</div>
+			<div class="col-12 align-center m-col-6 m-align-right">
+				<div class="box">
+					With cool text alignment.
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				Made with love by <a href="//www.michowski.com/">Michowski</a>.
+			</div>
+		</div>
+	</main>
+</body>
+</html>

@@ -1,0 +1,184 @@
+/* Flexible grid system by Michowski (www.michowski.com) */
+
+// Map of breakpoints
+$flexible-breakpoint-map: (
+  xs: 0,
+  s: 34em,
+  m : 48em,
+  l : 62em,
+  xl: 75em
+);
+
+// Default responsive features
+$flexible-default-features: (
+  // Visibility
+  visible: (visibility: visible),
+  hidden: (visibility: hidden),
+  // Display
+  dsp-none: (display: none),
+  dsp-block: (display: block),
+  dsp-inline: (display: inline),
+  dsp-inline-block: (display: inline-block),
+  // Text align
+  align-left: (text-align: left),
+  align-center: (text-align: center),
+  align-right: (text-align: right),
+);
+
+// User-defined responsive features
+$flexible-features: ();
+
+// Column selector
+$flexible-column: ".col, [class*='col-']";
+@mixin flexible-column {
+  #{$flexible-column} {
+    @content;
+  }
+}
+
+// Row
+.row {
+  // ...is a flex
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: -webkit-box;
+  display: flex;
+  // ...is a row
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  flex-direction: row;
+  // ...and a wrapper
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  // it also has some settings
+  -webkit-flex: 0 1 auto;
+  -ms-flex: 0 1 auto;
+  -webkit-box-flex: 0;
+  flex: 0 1 auto;
+}
+
+// Reversed row
+.row_reverse {
+  -webkit-flex-direction: row-reverse;
+  -ms-flex-direction: row-reverse;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+  flex-direction: row-reverse;
+}
+
+// Media query up (min-width)
+@mixin flexible-breakpoint( $br-name ) {
+  $br-size: map_get( $flexible-breakpoint-map, $br-name );
+
+  @if ( $br-size == 0 ) {
+    @content;
+  }
+  @else {
+    @media ( min-width: $br-size ) {
+      @content;
+    }
+  }
+}
+
+// Media query down (max-width)
+@mixin flexible-breakpoint-down( $br-name ) {
+  $br-size: map_get( $flexible-breakpoint-map, $br-name );
+
+  @media ( max-width: $br-size - 0.01em ) {
+    @content;
+  }
+}
+
+// Creation of a grid system and responsive features
+@mixin flexible-create(
+  $unit-number: 12,
+  // Horizontal gutter
+  $gutter-x: 0,
+  // Vertical gutter
+  $gutter-y: 0,
+  // Whether to generate class ".col-x" (true) or ".xs-col-x" (false)
+  $simple-class-name: true,
+  // Whether to add xs prefix (true) or not (false)
+  $first-breakpoint-prefix: false ) {
+  // Column
+  @include flexible-column {
+    box-sizing: border-box;
+    -webkit-flex: 0 0 auto;
+    -ms-flex: 0 0 auto;
+    -webkit-box-flex: 0;
+    flex: 0 0 auto;
+    max-width: 100%;
+    padding: $gutter-y $gutter-x;
+  }
+
+  @each $br-name, $br-size in $flexible-breakpoint-map {
+    @include flexible-breakpoint( $br-name ) {
+      // Breakpoint size prefix
+      $br-prefix: '.' + $br-name + '-';
+      @if ( $br-size == 0 and not $first-breakpoint-prefix ) {
+        $br-prefix: '.';
+      }
+
+      // Merge default responsive features with user-defined
+      $features: map_merge($flexible-default-features, $flexible-features);
+
+      @each $ft-name, $ft-map in $features {
+        // Responsive feature selector
+        #{$br-prefix}#{$ft-name} {
+          // Add every property-value pair for feature
+          @each $ft-property, $ft-value in $ft-map {
+            #{$ft-property}: $ft-value;
+          }
+        }
+      }
+
+      @for $i from 1 to $unit-number + 1 {
+        // Selector for single column
+        $col: $br-prefix + 'col-' + $i;
+        @if ( not $simple-class-name ) {
+          $col: $col + '-' + $unit-number;
+        }
+
+        // Calculate the column width
+        $w: 100% * $i / $unit-number;
+
+        // Single column
+        #{$col} {
+          // Flex size
+          -webkit-flex-basis: $w;
+          -ms-flex-preferred-size: $w;
+          flex-basis: $w;
+          max-width: $w;
+        }
+
+        // Selector for column offset
+        $off: $br-prefix + 'offset-' + $i;
+        @if ( not $simple-class-name ) {
+          $off: $off + '-' + $unit-number;
+        }
+
+        // Column offset
+        #{$off} {
+          margin-left: 100% * $i / $unit-number;
+        }
+      }
+
+      // Column with auto width
+      #{$br-prefix + 'col-auto'} {
+        // Let it grow
+        -webkit-box-flex: 1;
+        -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1;
+
+        // Override column size to 0
+        -ms-flex-preferred-size: 0;
+        -webkit-flex-basis: 0;
+        flex-basis: 0;
+      }
+    }
+  }
+}
