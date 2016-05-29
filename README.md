@@ -20,6 +20,8 @@ Voila! Your grid system is ready to use. Now you can write some HTML:
 ```
 The code above creates row with 2 columns inside. Their widths are equal to 8/12 and 4/12 of row width on screens wider than `m` size (by default: `48em`). On thinner screens columns are filling the whole row (12/12 of its width).
 
+As you can already guess, the syntax for column class is `<breakpoint>-col-<units>`. We don't need to write the breakpoint part for the starting breakpoint (here: `xs`), as its equal to 0, but it can be changed by passing special argument to `flexible-create`.
+
 These are all arguments you can pass to `flexible-create` mixin:
 ```scss
 @mixin flexible-create(
@@ -35,8 +37,14 @@ These are all arguments you can pass to `flexible-create` mixin:
   // Whether to add first breakpoint prefix (i.e. xs-feature) to classes (true) or not (false)
   $first-breakpoint-prefix: false )
 ```  
+### Column offset
+You can simply add offset to the column using `<breakpoint>-offset-<units>` syntax, i.e:
+```html
+<div class="col-3 m-offset-3"></div>
+```
+The width of above column is equal to 3/12 of row. On screens wider than `m` it actually takes 6/12 of a row width, because we have added offset of 3 units.
 ### Custom columns order
-If you want to reverse order of columns within row, add `row_reverse` class to the row. Remember that both rows and columns are `flexbox` elements. That means you can change the order of columns using CSS `order` property.
+If you want to reverse order of columns within row, add `row_reverse` class to the row. Remember that both rows and columns are `flexbox` elements. This means you can change the order of columns using CSS `order` property.
 ### Auto width column
 If you want your column to auto fill the row (even if there are already other columns inside the row), simply write:
 ```HTML
