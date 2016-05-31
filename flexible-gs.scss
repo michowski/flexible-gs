@@ -183,10 +183,9 @@ $flexible-column: ".col, [class*='col-']";
 
       // Column which doesn't grow to row width
       #{$br-prefix + 'col-no-grow'} {
-        -webkit-box-flex: 0;
-        -webkit-flex-grow: 0;
-        -ms-flex-positive: 0;
-        flex-grow: 0;
+        -ms-flex-preferred-size: auto;
+        -webkit-flex-basis: auto;
+        flex-basis: auto;
       }
     }
   }
