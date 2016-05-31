@@ -94,14 +94,15 @@ $flexible-column: ".col, [class*='col-']";
 
 // Creation of a grid system and responsive features
 @mixin flexible-create(
+  // Number of equal parts row is divided into
   $unit-number: 12,
   // Horizontal gutter
   $gutter-x: 0,
   // Vertical gutter
   $gutter-y: 0,
-  // Whether to generate class ".col-x" (true) or ".xs-col-x" (false)
+  // Whether to generate class ".col-x" (true) or ".col-x-12" (false) [where 12 is $unit-number]
   $simple-class-name: true,
-  // Whether to add xs prefix (true) or not (false)
+  // Whether to add first breakpoint prefix [i.e. xs] (true) or not (false)
   $first-breakpoint-prefix: false ) {
   // Column
   @include flexible-column {
@@ -166,7 +167,7 @@ $flexible-column: ".col, [class*='col-']";
         }
       }
 
-      // Column with auto width
+      // Column with auto width (column which grows to row width)
       #{$br-prefix + 'col-auto'} {
         // Let it grow
         -webkit-box-flex: 1;
@@ -178,6 +179,14 @@ $flexible-column: ".col, [class*='col-']";
         -ms-flex-preferred-size: 0;
         -webkit-flex-basis: 0;
         flex-basis: 0;
+      }
+
+      // Column which doesn't grow to row width
+      #{$br-prefix + 'col-no-grow'} {
+        -webkit-box-flex: 0;
+        -webkit-flex-grow: 0;
+        -ms-flex-positive: 0;
+        flex-grow: 0;
       }
     }
   }
