@@ -28,14 +28,6 @@ $flexible-default-features: (
 // User-defined responsive features
 $flexible-features: ();
 
-// Column selector
-$flexible-column: ".col, [class*='col-']";
-@mixin flexible-column {
-  #{$flexible-column} {
-    @content;
-  }
-}
-
 // Row
 .row {
   // ...is a flex
@@ -104,8 +96,9 @@ $flexible-column: ".col, [class*='col-']";
   $simple-class-name: true,
   // Whether to add first breakpoint prefix [i.e. xs] (true) or not (false)
   $first-breakpoint-prefix: false ) {
-  // Column
-  @include flexible-column {
+
+  // Column placeholder
+  %flexible-column {
     box-sizing: border-box;
     -webkit-flex: 0 0 auto;
     -ms-flex: 0 0 auto;
@@ -115,6 +108,7 @@ $flexible-column: ".col, [class*='col-']";
     padding: $gutter-y $gutter-x;
   }
 
+  // Each breakpoint
   @each $br-name, $br-size in $flexible-breakpoint-map {
     @include flexible-breakpoint( $br-name ) {
       // Breakpoint size prefix
@@ -136,6 +130,7 @@ $flexible-column: ".col, [class*='col-']";
         }
       }
 
+      // Each unit
       @for $i from 1 to $unit-number + 1 {
         // Selector for single column
         $col: $br-prefix + 'col-' + $i;
@@ -147,6 +142,11 @@ $flexible-column: ".col, [class*='col-']";
         $w: 100% * $i / $unit-number;
 
         // Single column
+        @at-root(without: media) {
+          #{$col} {
+            @extend %flexible-column;
+          }
+        }
         #{$col} {
           // Flex size
           -webkit-flex-basis: $w;
@@ -167,7 +167,24 @@ $flexible-column: ".col, [class*='col-']";
         }
       }
 
+      // Column which doesn't grow to row width
+      @at-root(without: media) {
+        #{$br-prefix + 'col'} {
+          @extend %flexible-column;
+        }
+      }
+      #{$br-prefix + 'col'} {
+        -ms-flex-preferred-size: auto;
+        -webkit-flex-basis: auto;
+        flex-basis: auto;
+      }
+
       // Column with auto width (column which grows to row width)
+      @at-root(without: media) {
+        #{$br-prefix + 'col-auto'} {
+          @extend %flexible-column;
+        }
+      }
       #{$br-prefix + 'col-auto'} {
         // Let it grow
         -webkit-box-flex: 1;
@@ -175,17 +192,9 @@ $flexible-column: ".col, [class*='col-']";
         -ms-flex-positive: 1;
         flex-grow: 1;
 
-        // Override column size to 0
         -ms-flex-preferred-size: 0;
         -webkit-flex-basis: 0;
         flex-basis: 0;
-      }
-
-      // Column which doesn't grow to row width
-      #{$br-prefix + 'col-no-grow'} {
-        -ms-flex-preferred-size: auto;
-        -webkit-flex-basis: auto;
-        flex-basis: auto;
       }
     }
   }
