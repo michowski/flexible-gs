@@ -1,19 +1,19 @@
 # Flexible grid system
 Responsive grid system based on Flexbox and built with SCSS. Actually: an ultra light library for creating responsive websites. Fully customizable with SCSS. Reasonable alternative to complex frameworks.
 
-The best way to understand Flexible possibilities is to see source code of `test.html` and `text.scss` files. You can watch live demo [here](http://www.michowski.com/work/flexible-gs/test.html).
+The best way to understand Flexible possibilities is to see source code of `demo/demo.html` and `demo/demo.scss` files. You can watch live demo [here](http://www.michowski.com/work/flexible-gs/demo/demo.html).
 ## Grid system
-### TL;DR cheatsheet/guide
-Classes for columns:
+### TL;DR cheatsheet
+Classes:
 * `<breakpoint>-col` - generic column, not growing to the size of row [opposite to `col-auto`]
 * `<breakpoint>-col-<x>` - regular column, taking `<x>` units (parts) of row width
 * `<breakpoint>-col-auto` - column automically growing to the size of row [opposite to `col`]
 * `<breakpoint>-offset-<x>` - column offset equal to `<x>` units (parts) of row width
-Class for responsive features:
-```
-<breakpoint>-<feature-name>
-```
-By default the breakpoints are: `xs`, `s`, `m`, `l`, `xl` and you ommit `xs-` (because it's the starting breakpoint). Rows are divided into `12` units. Of course you can change all of that.
+* `<breakpoint>-<feature-name>` - this class adds a responsive feature to the element
+
+By default the breakpoints are: `xs`, `s`, `m`, `l`, `xl` and you ommit `xs-` for class names (because it's the starting breakpoint). Rows are divided into `12` units. Of course you can change all of that. 
+
+To use breakpoints for own media queries, simply write your code inside `@include flexible-breakpoint( <breakpoint> ) { ... }`. To use reversed functionality (`(max-width: ...)` media query), go with `@include flexible-breakpoint-down( <breakpoint> ) { ... }`.
 ### Basic usage
 Just import the `flexible-gs.scss` file and use `flexible-create` mixin to create your own grid system:
 ```scss
@@ -86,10 +86,10 @@ This makes font size of `body` becoming larger for wider screens. If you want to
 ```scss
 body {
   font-size: 100%;
-  @include flexible-breakpoint-down(s) {
+  @include flexible-breakpoint-down(m) {
     font-size: 90%;
   }
-  @include flexible-breakpoint-down(xs) {
+  @include flexible-breakpoint-down(s) {
     font-size: 80%;
   }
 }
