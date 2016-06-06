@@ -61,8 +61,7 @@ If you want your column to auto fill the row (even if there are already other co
 ```HTML
 <div class="col-auto"></div>
 ```
-When there are both regular columns and `col-auto` columns, the latter ones have all equal width. It's the space inside row not taken by regular columns and dividen by amount of `col-auto` columns. Pretty intuitive and very powerful for creating custom design.
-**Worth noting!** 
+When there are both regular columns and `col-auto` columns inside one row, the latter ones have all equal width and fill the space not taken by regular columns (by regular we mean those with fixed width, not auto).
 ### Irregular columns aka generic columns
 Sometimes you may want to make column width independent of grid system:
 ```HTML
