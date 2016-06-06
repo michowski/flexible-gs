@@ -3,6 +3,17 @@ Responsive grid system based on Flexbox and built with SCSS. Actually: an ultra 
 
 The best way to understand Flexible possibilities is to see source code of `test.html` and `text.scss` files. You can watch live demo [here](http://www.michowski.com/work/flexible-gs/test.html).
 ## Grid system
+### TL;DR cheatsheet/guide
+Classes for columns:
+* `<breakpoint>-col` - generic column, not growing to the size of row [opposite to `col-auto`]
+* `<breakpoint>-col-<x>` - regular column, taking `<x>` units (parts) of row width
+* `<breakpoint>-col-auto` - column automically growing to the size of row [opposite to `col`]
+* `<breakpoint>-offset-<x>` - column offset equal to `<x>` units (parts) of row width
+Class for responsive features:
+```
+<breakpoint>-<feature-name>
+```
+By default the breakpoints are: `xs`, `s`, `m`, `l`, `xl` and you ommit `xs-` (because it's the starting breakpoint). Rows are divided into `12` units. Of course you can change all of that.
 ### Basic usage
 Just import the `flexible-gs.scss` file and use `flexible-create` mixin to create your own grid system:
 ```scss
@@ -50,20 +61,14 @@ If you want your column to auto fill the row (even if there are already other co
 ```HTML
 <div class="col-auto"></div>
 ```
-### Irregular columns
+When there are both regular columns and `col-auto` columns, the latter ones have all equal width. It's the space inside row not taken by regular columns and dividen by amount of `col-auto` columns. Pretty intuitive and very powerful for creating custom design.
+**Worth noting!** 
+### Irregular columns aka generic columns
 Sometimes you may want to make column width independent of grid system:
 ```HTML
 <div class="col my-custom-column"></div>
 ```
-`col` is just a class for a generic column. Now you can attach any properties to `.my-custom-column` in CSS, like fixed width, etc.
-### Accessing all columns
-To add or override some properties to all columns, you can use `flexible-column` mixin:
-```scss
-@include flexible-column {
-  // Change gutters for all columns to 20px
-  padding: 20px;
-}
-```
+You can attach any properties to `.my-custom-column` in CSS, like fixed width, etc. By default, `<breakpoint>-col` (here: `col`) is just a generic column, which doesn't grow to row size.
 ## Breakpoints
 By default, Flexible uses same breakpoints as Bootstrap (except `lg` is simply `l`, `md` is `m` and `lg` is `l`). To use them in your SCSS code, you can use `flexible-breakpoint` mixin:
 ```scss
@@ -100,7 +105,7 @@ $flexible-breakpoint-map: (
   big: 50em
 );
 ```
-We use the "up breakpoints" convention, as it follows the "mobile-first design". That means that **you have to** declare the breakpoint with width equal to 0. That doesn't mean you have to use its name. However, if you prefer to do so, simply set 5th argument of `flexible-create` to true.
+We use the "up breakpoints" convention, as it follows the "mobile-first design" pattern. That means that **you have to** declare the breakpoint with width equal to 0. That doesn't mean you have to use its name. However, if you prefer to do so, simply set 5th argument of `flexible-create` to true.
 ## Responsive features
 By default, Flexible comes with some helpers classes, which allows us to quickly attach responsive features to our elements. For example:
 ```html
