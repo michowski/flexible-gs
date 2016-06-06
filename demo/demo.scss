@@ -6,7 +6,7 @@ $flexible-features: (
 );
 
 // Create grid with 12 units and 10px horizontal gutter
-@include flexible-create( 1, 10px );
+@include flexible-create( 12, 10px );
 
 body {
   width: 100%;
