@@ -5,6 +5,7 @@ The best way to understand Flexible possibilities is to see source code of `demo
 ## Grid system
 ### TL;DR cheatsheet
 Classes:
+* `row` - a row - it's meant to wrap columns (they won't work properly if not within a row element)
 * `<breakpoint>-col` - generic column, not growing to the size of row [opposite to `col-auto`]
 * `<breakpoint>-col-<x>` - regular column, taking `<x>` units (parts) of row width
 * `<breakpoint>-col-auto` - column automically growing to the size of row [opposite to `col`]
