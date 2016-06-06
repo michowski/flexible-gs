@@ -97,20 +97,17 @@ $flexible-features: ();
   // Whether to add first breakpoint prefix [i.e. xs] (true) or not (false)
   $first-breakpoint-prefix: false ) {
 
-  // Column placeholder
-  %flexible-column {
-    box-sizing: border-box;
-    -webkit-flex: 0 0 auto;
-    -ms-flex: 0 0 auto;
-    -webkit-box-flex: 0;
-    flex: 0 0 auto;
-    max-width: 100%;
-    padding: $gutter-y $gutter-x;
-  }
+  // We want to map all breakpoints with column selectors and properties and then use them in a good order.
+  // This is due to Libsass' lack of @at-root(without: media) + placeholder @extend support.
+  // YES, this is ridiculous! It makes the code of this library so chaotic.
+  $map: ();
 
   // Each breakpoint
   @each $br-name, $br-size in $flexible-breakpoint-map {
-    @include flexible-breakpoint( $br-name ) {
+    @include flexible-breakpoint($br-name) {
+      // Map with all elements and their properties attached to this breakpoint
+      $br-map: ();
+
       // Breakpoint size prefix
       $br-prefix: '.' + $br-name + '-';
       @if ( $br-size == 0 and not $first-breakpoint-prefix ) {
@@ -142,18 +139,13 @@ $flexible-features: ();
         $w: 100% * $i / $unit-number;
 
         // Single column
-        @at-root(without: media) {
-          #{$col} {
-            @extend %flexible-column;
-          }
-        }
-        #{$col} {
+        $br-map: map_merge($br-map, ($col: (
           // Flex size
-          -webkit-flex-basis: $w;
-          -ms-flex-preferred-size: $w;
-          flex-basis: $w;
-          max-width: $w;
-        }
+          -webkit-flex-basis: $w,
+          -ms-flex-preferred-size: $w,
+          flex-basis: $w,
+          max-width: $w
+        )));
 
         // Selector for column offset
         $off: $br-prefix + 'offset-' + $i;
@@ -163,38 +155,65 @@ $flexible-features: ();
 
         // Column offset
         #{$off} {
-          margin-left: 100% * $i / $unit-number;
+          margin-left: 100% * $i / $unit-number
         }
       }
 
       // Column which doesn't grow to row width
-      @at-root(without: media) {
-        #{$br-prefix + 'col'} {
-          @extend %flexible-column;
-        }
-      }
-      #{$br-prefix + 'col'} {
-        -ms-flex-preferred-size: auto;
-        -webkit-flex-basis: auto;
-        flex-basis: auto;
-      }
+      $br-map: map_merge($br-map, ($br-prefix + 'col': (
+        -ms-flex-preferred-size: auto,
+        -webkit-flex-basis: auto,
+        flex-basis: auto
+      )));
 
       // Column with auto width (column which grows to row width)
-      @at-root(without: media) {
-        #{$br-prefix + 'col-auto'} {
-          @extend %flexible-column;
-        }
-      }
-      #{$br-prefix + 'col-auto'} {
+      $br-map: map_merge($br-map, ($br-prefix + 'col-auto': (
         // Let it grow
-        -webkit-box-flex: 1;
-        -webkit-flex-grow: 1;
-        -ms-flex-positive: 1;
-        flex-grow: 1;
+        -webkit-box-flex: 1,
+        -webkit-flex-grow: 1,
+        -ms-flex-positive: 1,
+        flex-grow: 1,
 
-        -ms-flex-preferred-size: 0;
-        -webkit-flex-basis: 0;
-        flex-basis: 0;
+        -ms-flex-preferred-size: 0,
+        -webkit-flex-basis: 0,
+        flex-basis: 0
+      )));
+
+      // Add media query with all selectors and properties to the map
+      $map: map_merge($map, ($br-name: $br-map));
+    }
+  }
+
+  // Now, after creating the whole map with all selectors and properties, we finally can:
+  // -> 1: Set properties common to all columns:
+  $column-selector: "";
+  @each $br-name, $br-map in $map {
+    $column-list: map_keys($br-map);
+    @each $column in $column-list {
+      $column-selector: $column-selector + $column + ", ";
+    }
+  }
+  $column-selector: str_slice( $column-selector, 0, -2 );
+
+  #{$column-selector} {
+    box-sizing: border-box;
+    -webkit-flex: 0 0 auto;
+    -ms-flex: 0 0 auto;
+    -webkit-box-flex: 0;
+    flex: 0 0 auto;
+    max-width: 100%;
+    padding: $gutter-y $gutter-x;
+  }
+
+  // -> 2: Set properties for every single column selector:
+  @each $br-name, $br-map in $map {
+    @include flexible-breakpoint($br-name) {
+      @each $selector, $properties in $br-map {
+        #{$selector} {
+          @each $key, $value in $properties {
+            #{$key}: $value;
+          }
+        }
       }
     }
   }
