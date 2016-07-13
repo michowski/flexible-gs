@@ -1,7 +1,7 @@
 # Flexible grid system
 Responsive grid system based on Flexbox and built with SCSS. Actually: an ultra light library for creating responsive websites. Fully customizable with SCSS. Reasonable alternative to complex frameworks.
 
-The best way to understand Flexible possibilities is to see source code of `demo/demo.html` and `demo/demo.scss` files. You can watch live demo [here](http://www.michowski.com/work/flexible-gs/demo/demo.html).
+The best way to understand Flexible possibilities is to see source code of `demo/demo.html` and `demo/demo.scss` files. You can watch live demo [here](http://www.michowski.com/dev/flexible-gs/demo/demo.html).
 ## Grid system
 ### TL;DR cheatsheet
 Classes:
